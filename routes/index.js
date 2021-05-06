@@ -37,6 +37,8 @@ router.post('/update_post',auth,postController.update_post);
 router.get('/delete_post/:id',auth,postController.delete_post);
 //like post
 router.post('/like_post/:id',auth,postController.like_post);
+//unlike post
+router.post('/unlike_post/:id',auth,postController.unlike_post);
 /*
 user methods
  */

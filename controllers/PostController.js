@@ -44,6 +44,28 @@ exports.like_post = function (req, res) {
         res.send(204);
     });
  }
+
+exports.unlike_post = function (req, res) {
+    client.send_sync('hellolaravel', {
+        route: "/api/post/unlike/"+req.params.id,
+        method: "POST",
+        headers: {
+            Accept:"application/json",
+            Authorization: "Bearer "+req.cookies.accessToken
+        },
+        query: null,
+        body: null
+    }, function (post, error) {
+        if (error) {
+            res.render('error', {
+                error_message: error.message,
+                error_status: error.status
+            });
+            return;
+        }
+        res.send(204);
+    });
+}
 exports.create_post = function (req, res) {
     client.send_sync('hellolaravel', {
             route: "/api/post",

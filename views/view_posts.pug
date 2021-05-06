@@ -55,7 +55,7 @@ block scripts
                     type: "POST",
                     url: "/unlike_post/" + post_id,
                     success: function () {
-                        let current_likes_count = parseInt($('#likes-count-' + post_id).text());
+                        let current_likes_count = parseInt($('#likes-count-'+ post_id).text());
                         $('#likes-count-' + post_id).text(current_likes_count - 1);
                         unlike_button.replaceWith('<a href="javascript:;" class="btn btn-primary like-post" data-post-id="' + post_id + '">Like</a>');
                     },
