@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const auth = require('../middleware/auth');
-var notificationController = require('../controllers/Notificationcontroller');
+var notificationController = require('../controllers/NotificationController');
 var postController = require('../controllers/PostController');
 var userController = require('../controllers/UserController')
 

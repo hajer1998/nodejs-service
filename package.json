@@ -23,7 +23,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.12.2",
     "morgan": "~1.9.1",
-    "pug": "2.0.0-beta11"
+    "pug": "2.0.0-beta11",
+    "socket.io": "^4.0.2"
   },
   "devDependencies": {
     "faker": "^5.5.2"
