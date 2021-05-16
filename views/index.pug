@@ -16,7 +16,7 @@ block content
             |
             input(type='password', name='password', placeholder='Password')
             |
-            input.btn.btn-primary(type='submit', value='Sign Up')
+            input.btn.btn-primary(type='submit',style='background:#1ca5c7;border-radius: 20px;cursor: pointer;padding: 12px 45px;font-weight: bold;font-size: 20px;border-radius: 20px;color: white;' value='Sign Up')
         |
         .form-container.sign-in-container
           form(action='/signin', method='post')
@@ -29,7 +29,7 @@ block content
             |
             a(href='#') Forgot your password?
             |
-            input.btn.btn-primary(type='submit', value='Sign In')
+            input.btn.btn-primary(type='submit',style='background:#1ca5c7;border-radius: 20px;cursor: pointer;padding: 12px 45px;font-weight: bold;font-size: 20px;border-radius: 20px;color: white;' value='Sign In')
         |
         .overlay-container
           .overlay
@@ -53,7 +53,7 @@ block content
         box-sizing: border-box;
         }
         body {
-            background: #000000;
+            background: #ffffff;
             font-family: "Nunito", sans-serif;
             display: flex;
             flex-direction: column;
@@ -139,6 +139,8 @@ block content
           margin: 8px 0;
           width: 100%;
           font-family: inherit;
+          border-radius: 20px;
+          font-size: 15px;
         }
         .container {
           background-color: #fff;

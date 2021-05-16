@@ -1,8 +1,9 @@
 var amqp = require('amqplib/callback_api');
+var config = require('../config/config');
 module.exports = {
     send_sync: (queue_name, message, callback) => {
         let result = {};
-        amqp.connect('amqp://172.17.0.1', function (error0, connection) {
+        amqp.connect(config.rabbitmq.host, function (error0, connection) {
             if (error0) {
                 throw error0;
             }

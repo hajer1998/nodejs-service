@@ -8,6 +8,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const mongoose = require('mongoose');
 const bodyParser = require("body-parser");
+var db = require('./modules/db');
 
 var app = express();
 
@@ -33,7 +34,7 @@ app.use(function(req, res, next) {
 });
 
 //appel du methode connect()
-connect();
+db.connect();
 
 // error handler
 app.use(function(err, req, res, next) {
@@ -45,19 +46,4 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-//connexion avec la base
-function connect() {
-  mongoose.connection
-      .on('error', console.log)
-      .on('disconnected', connect);
-  return mongoose.connect(config.db.uri, {
-    keepAlive: 1,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    user: config.db.user,
-    pass: config.db.pass,
-    authSource: config.db.dbName
-  });
-}
 module.exports = app;

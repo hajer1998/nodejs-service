@@ -7,4 +7,10 @@ module.exports = {
         pass: "root",
         dbName: "admin"
     },
+    rabbitmq: {
+        host: 'amqp://172.17.0.1',
+        port: 5672,
+        user: 'guest',
+        password: 'guest'
+    }
 };

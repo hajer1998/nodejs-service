@@ -18,7 +18,8 @@ exports.posts_list = function (req, res) {
             return;
         }
         res.render('view_posts', {
-            posts_list: posts_list.data
+            posts_list: posts_list.data,
+            logged_in_user_id: req.logged_in_user_id
         });
     });
 }

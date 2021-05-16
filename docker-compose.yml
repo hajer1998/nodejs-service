@@ -15,6 +15,21 @@ services:
     depends_on:
       - mongodb
 
+  node-worker:
+    build:
+      context: .
+    command: ./workers/worker.js
+    volumes:
+      - .:/app
+        - /app/node_modules
+    ports:
+    - 8080:8080
+    networks:
+      node-microservice-network:
+        ipv4_address: 11.5.0.3
+    depends_on:
+       - mongodb
+
   mongodb:
       image: mongo:latest
       environment:
