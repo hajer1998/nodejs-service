@@ -8,7 +8,7 @@ module.exports = {
         dbName: "admin"
     },
     rabbitmq: {
-        host: 'amqp://172.17.0.1',
+        host: 'amqp://172.18.0.1',
         port: 5672,
         user: 'guest',
         password: 'guest'
