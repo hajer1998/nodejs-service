@@ -2,15 +2,16 @@
 
 module.exports = {
     db: {
-        uri: process.env.MONGODB_URL || 'mongodb://11.5.0.4:27017/test',
-        user: "root",
-        pass: "root",
-        dbName: "admin"
+        uri: process.env.MONGODB_URL,
+        user: process.env.MONGODB_USER,
+        pass: process.env.MONGODB_PASSWORD,
+        dbName: process.env.MONGODB_AUTH_DATABASE
     },
     rabbitmq: {
-        host: 'amqp://172.18.0.1',
-        port: 5672,
-        user: 'guest',
-        password: 'guest'
-    }
+        host: process.env.RABBITMQ_HOST,
+        port: process.env.RABBITMQ_PORT,
+        user: process.env.RABBITMQ_USER,
+        password: process.env.RABBITMQ_PASSWORD
+    },
+    appUrl: process.env.APP_URL
 };

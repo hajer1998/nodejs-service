@@ -1,8 +1,9 @@
+const config = require('../config/config')
 const app = require('express')();
 const server = require('http').Server(app);
 const io = require('socket.io')(server, {
     cors: {
-        origin: 'http://localhost:3000',
+        origin: config.appUrl,
     }
 });
 
