@@ -2,7 +2,7 @@ var jwt = require('jsonwebtoken');
 module.exports = (req, res, next) => {
     try {
         if(req.cookies.accessToken){
-            var decoded = jwt.verify(req.cookies.accessToken, 'hajer_secret');
+            var decoded = jwt.verify(req.cookies.accessToken, process.env.JWT_SECRET);
             req.logged_in_user_id = decoded.user_id;
             next();
         } else {

@@ -30,8 +30,9 @@ amqp.connect(config.rabbitmq.host, function(error0, connection) {
                 db.connect();
                 let Notification = require ('../models/Notification');
                 const notification = new Notification({
-                    userId: message.post_owner_id,
-                    postId: message.post_id
+                    userId: message.user_id,
+                    postId: message.post_id,
+                    ownerId: message.post_owner_id
                 });
 
                 notification.save()
