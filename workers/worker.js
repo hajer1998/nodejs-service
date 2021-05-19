@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
+require('dotenv').config();
+const config = require('../config/config');
 const queue_name = 'nodejs';
-var amqp = require('amqplib/callback_api');
-var io = require('../modules/socket');
-var config = require('../config/config');
-var db = require('../modules/db');
+const amqp = require('amqplib/callback_api');
+const io = require('../modules/socket');
+const db = require('../modules/db');
 
 amqp.connect(config.rabbitmq.host, function(error0, connection) {
     if (error0) {
@@ -38,9 +39,8 @@ amqp.connect(config.rabbitmq.host, function(error0, connection) {
                         console.log(err.message || "Some error occurred while creating the Notification.");
                     });
             }
-            console.log("sending message to user: "+ message.post_owner_id);
+
             io.socket.in("user-"+message.post_owner_id).emit('message', { room: "user-"+message.post_owner_id, message: message });
-            // io.socket.emit("user-"+message.post_owner_id, {message: message});
         }, {
             noAck: true
         });

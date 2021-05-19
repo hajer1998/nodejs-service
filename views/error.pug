@@ -1,6 +1,9 @@
 extends layout
 block content
-  span.alert.alert-danger= error_status + " " + error_message
+  div(style="top:100px; left:50px; position:relative;")
+    span.alert.alert-danger=error_status + " " + error_message
+    br
+    a.btn.btn-primary(href="javascript:history.go(-1);", style="margin-top: 20px;") Go back
 
 
 
