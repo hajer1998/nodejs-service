@@ -1,12 +1,13 @@
 const config = require('../config/config')
 const app = require('express')();
 const server = require('http').Server(app);
+
+
 const io = require('socket.io')(server, {
     cors: {
         origin: config.appUrl,
     }
 });
-
 module.exports = {
 
     socket : any = io.on('connection', (socket) => {
