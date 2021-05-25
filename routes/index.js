@@ -4,7 +4,7 @@ const auth = require('../middleware/auth');
 var notificationController = require('../controllers/NotificationController');
 var postController = require('../controllers/PostController');
 var userController = require('../controllers/UserController')
-
+//const  chatRouter  = require("./route/chatroute");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -50,4 +50,11 @@ router.get('/signout', userController.sign_out);
 //Sign in
 router.post('/signup', userController.sign_up);
 
+//profile
+router.get('/profile/:id',auth, userController.profile);
+
+router.post('/upload', auth, userController.upload);
+
+//chat router
+//app.use("/chats", chatRouter);
 module.exports = router;

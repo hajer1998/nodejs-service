@@ -1,0 +1,143 @@
+extends layout
+block content
+
+        h1 CLICK THE BABY!
+
+        div.chat-bubble
+            div.msgs
+            div.status
+        div.chat-box.hide
+            div.messages
+                div.msg Kathlyn : Hey! what's up?
+                div.msg Kevin : Heya! Nothing much, you?
+            div.input-holder
+                div.control
+                    input(type="text").chat-input
+                    button.chat-btn Send
+
+            Style.
+                $thumb-size: 4em
+                $thumb-offset: 2em
+                $primary-col: #80D49E
+                $online-col: #4DFF00
+
+                $chat-bar-height: 25em
+
+                =flex($type, $direction, $position)
+                  display: $type
+                  flex-flow: $direction
+                  justify-content: $position
+
+                body
+                  +flex(flex, column wrap, flex-start)
+                  background: #DDFFE8
+
+                .chat-bubble
+                  +flex(flex, column wrap, center)
+                  text-align: center
+                  position: absolute
+                  bottom: $thumb-offset
+                  left: $thumb-offset
+                  border-radius: 100%
+                  background: url('https://c1.staticflickr.com/9/8552/9023949498_c7eb673297_b.jpg') no-repeat
+                  background-size: 150%
+                  background-position: 50% 0%
+                  width: $thumb-size
+                  height: $thumb-size
+                  transition: all .25s
+                  .status
+                    position: absolute
+                    height: $thumb-size / 4
+                    width: $thumb-size / 4
+                    border-radius: 100%
+                    background: $online-col
+                    right: 0
+                    top: 0
+                    border: 2px solid #FFF
+
+                .chat-bubble-hover
+                  transform: scale(1.5)
+                  cursor: pointer
+                  border: solid 4px $online-col
+                  box-shadow: 0px 15px 10px 1px rgba(0,0,0,0.2)
+                  .status
+                    border: none
+
+                .chat-bubble:hover
+                  @extend .chat-bubble-hover
+
+                .chat-box
+                  position: absolute
+                  left: 30%
+                  top: 0%
+                  +flex(flex, column wrap, space-between)
+                  height: 25em
+                  min-width: 20em
+                  padding: .1em
+                  background: #FFF
+                  transition: all 1s
+                  border-radius: 2px
+                  box-shadow: 0px 10px 10px 1px rgba(53, 127, 115, 0.8)
+                  .messages
+                    +flex(flex, column wrap, flex-end)
+                    margin: 0 auto
+                    border: 1px solid darken(#FFF, 20%)
+                    border-radius: 5px
+                    height: 80%
+                    width: 98%
+                    background: linear-gradient(transparent, transparentize($primary-col, 0.8))
+                    .msg
+                      +flex(flex, column wrap, center)
+                      margin: .3em 1em
+                      height: 25px
+
+                  .input-holder
+                    +flex(flex, column wrap, center)
+                    background: linear-gradient(90deg, #3DCC70, lighten(#3DCC70, 10%))
+                    height: 19%
+                    .control
+                      width: 100%
+                      height: 100%
+                      +flex(flex, row wrap, center)
+                      .chat-input
+                        height: 50%
+                        background: lighten(#3DCC70, 10%)
+                        width: 70%
+                        border-radius: 5px
+                        margin: auto
+                        border: none
+                        padding: 0 .5em 0 .5em
+                        transition: all .7s
+                        color: #FFF
+                      .chat-input:focus
+                        background: lighten(#3DCC70, 30%)
+                        outline: none
+                        color: #000
+                      .chat-btn
+                        +flex(flex, column wrap, center)
+                        width: 20%
+                        height: 50%
+                        margin: auto
+                        background: darken(#3DCC70, 10%)
+                        border: none
+                        text-align: center
+                        color: #FFF
+                        transition: all .25s
+                        border-radius: 2px
+                      .chat-btn:hover
+                        background: lighten(#3DCC70, 30%)
+                        cursor: pointer
+                        color: darken(#3DCC70, 30%)
+                      .chat-btn:focus
+                        outline: none
+
+                .chat-box.hide
+                  top: -$chat-bar-height * 1.1
+                  opacity: 0
+
+            Script.
+                $('.chat-bubble').click(function(){
+                  console.log("Bubbling")
+                  $('.chat-box').toggleClass('hide');
+                  $('.chat-bubble').toggleClass('chat-bubble-hover');
+                    })
