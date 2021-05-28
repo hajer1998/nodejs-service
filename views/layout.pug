@@ -27,20 +27,19 @@ html(lang='en')
               a.nav-link(href='/')
                 | Home
                 span.sr-only (current)
-            li.nav-item
-              a.nav-link.disabled(href='/profile/' + logged_in_user_id) Profile
-            li.nav-item
+            li.nav-item.active
+              a.nav-link(href='/profile/' + logged_in_user_id) Profile
+            li.nav-item.active
               a.nav-link(href='/postlist') Posts
-            li.nav-item
-              a.nav-link.disabled(href='/notifications') Notifications
-            li.nav-item
-              a.nav-link(href='/chat') Chat
+            li.nav-item.active
+              a.nav-link(href='/notifications') Notifications
           form.form-inline.mt-2.mt-md-0
             a.btn.btn-outline-danger.my-2.my-sm-0(href='/signout') Log Out
 
     //Begin page content
     main.layoutcontainer(role='main')
       block content
+      //include chat.pug
     //footer.footer
     //  .layoutcontainer
     //    span.text-muted Place sticky footer content here.

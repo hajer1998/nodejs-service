@@ -1,5 +1,7 @@
 var client = require('../modules/client');
 const imgur = require('imgur');
+const config = require('../config/config')
+
 exports.sign_in = function (req, res) {
     client.send_sync('hellolaravel', {
         route: "/api/user/login",
@@ -58,7 +60,7 @@ exports.sign_up = function (req,res) {
 
 exports.profile = function (req, res){
     client.send_sync('hellolaravel', {
-        route: "/api/profile/"+req.logged_in_user_id,
+        route: "/api/user/profile/"+req.logged_in_user_id,
         method: "GET",
         headers:{
             Accept: "application/json",
@@ -80,6 +82,55 @@ exports.profile = function (req, res){
     });
 }
 
+exports.updateProf = function (req, res){
+    client.send_sync('hellolaravel', {
+        route: "/api/user/updateProfile/"+req.logged_in_user_id,
+        method: "PUT",
+        headers:{
+            Accept: "application/json",
+            Authorization: 'Bearer '+req.cookies.accessToken
+        },
+        query: null,
+        body: {
+            name: req.body.name,
+            email: req.body.email
+        }
+    }, function (result,error) {
+        if (error) {
+            res.render('error', {
+                error_message: error.message,
+                error_status: error.status
+            });
+        }
+        res.redirect('/profile/'+req.logged_in_user_id);
+    });
+}
+exports.render_edit_profile = function (req, res) {
+    client.send_sync('hellolaravel', {
+        route: "/api/user/profile/"+req.params.logged_in_user_id,
+        method: "GET",
+        headers: {
+            Accept:"application/json",
+            Authorization: "Bearer "+req.cookies.accessToken
+        },
+        query: null,
+        body: null
+    }, function (result, error) {
+        if (error) {
+            res.render('error', {
+                error_message: error.message,
+                error_status: error.status
+            });
+            return;
+        }
+        res.render('updateProf', {
+            user_id: result.response._id,
+            user_name: result.response.name,
+            user_email: result.response.email,
+        });
+    });
+}
+
 exports.upload = async function (req, res) {
     var imageLink;
 
@@ -89,11 +140,10 @@ exports.upload = async function (req, res) {
         res.status(400).send('Image is invalid');
         return;
     }
-
+    //res.json({"img":"Hi"});
     image = image
         .replace(/^data:image\/(png|gif|jpeg);base64,/,'');
-
-    imgur.setClientId('7b18dfee164f5f8');
+    imgur.setClientId(config.imgUrClientId);
     imgur
         .uploadBase64(image)
         .then(function(json) {
@@ -116,9 +166,9 @@ exports.upload = async function (req, res) {
                         error_status: error.status
                     });
 
-                    res.status(204).send(imageLink);
                 }
             });
+            res.status(204).send(imageLink);
         })
         .catch((error) => {
             console.log(error.message);

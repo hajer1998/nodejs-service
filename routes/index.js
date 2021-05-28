@@ -52,7 +52,11 @@ router.post('/signup', userController.sign_up);
 
 //profile
 router.get('/profile/:id',auth, userController.profile);
-
+//render edit profile
+router.get('/render_edit_profile/:id', auth, userController.render_edit_profile);
+//update profile
+router.post('/updateProf',auth, userController.updateProf);
+//upload profile picture
 router.post('/upload', auth, userController.upload);
 
 //chat router

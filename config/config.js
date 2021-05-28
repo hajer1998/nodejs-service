@@ -13,5 +13,6 @@ module.exports = {
         user: process.env.RABBITMQ_USER,
         password: process.env.RABBITMQ_PASSWORD
     },
-    appUrl: process.env.APP_URL
+    appUrl: process.env.APP_URL,
+    imgUrClientId: process.env.IMGUR_CLIENT_ID
 };

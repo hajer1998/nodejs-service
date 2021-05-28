@@ -3,21 +3,10 @@ block content
 
     .flexbox-right
         a.profile-picture
-            img.imageProfile(src='https://i.imgur.com/aIcL9f6.jpg' width='100%' height='100%' alt='')
+            img(src='https://image.flaticon.com/icons/png/512/174/174316.png' width='100%' height='100%' alt='')
     #dropdownmenu.flexbox-col
         .menu-item
-            a
-                i.uil.uil-user
-                |  Username
-        #switch.menu-item
-            a
-                i.uil.uil-sunset
-                |  Light Mode
-        .menu-item
-            a
-                i.uil.uil-arrow-right
-                |  Logout
-
+             a(href='/render_edit_profile/'+ user._id) Personal Informations
     .profile-top
         .profile-left
             form.profile-pic-upload(method='post' action='' enctype='multipart/form-data')
@@ -25,7 +14,10 @@ block content
                     fieldset.profile-pic-upload-input
                         input#choose-profile-picture(type='file' name='image' value='Velg bilde' accept='images')
                     a.profile-pic
-                        img.imageProfile(src='https://i.imgur.com/aIcL9f6.jpg' alt='')
+                        if(user.imageLink)
+                            img.imageProfile(src=user.imageLink+'' alt='')
+                        else
+                            img.imageProfile(src='https://i.pinimg.com/originals/51/f6/fb/51f6fb256629fc755b8870c801092942.png' alt='')
                     .profile-pic-note.flexbox
                         p Upload Photo
         .profile-right.flexbox-start-col
@@ -42,7 +34,8 @@ block content
                         br
                         span @Otheruser
 
-    h1.mt-5 Posts list
+                img(src='https://cdn.discordapp.com/attachments/805885199313141800/847564478287446046/bulle-chat_53876-25540-removebg.png' width='50px' height='50px' alt='')
+    h1(style='margin-top:28px').mt-5 Posts list
     .bouton_4
         a(href='render_create_form' )
             i.fas.fa-plus(style="font-size: 20px;color: white;padding: 11px;")
@@ -91,12 +84,6 @@ block content
                                                 i.fas.fa-thumbs-up(style="margin-right: 7px;")
                                                 span #{post.likes_count}
                                     input(value=post.likes_count hidden='' id=post._id)
-
-
-
-
-
-
 
             else
                 h4.mt-5 No posts found
@@ -199,6 +186,7 @@ block scripts
                                 image: reader.result
                             },
                             success: function (result) {
+                                console.log(result)
                                 alert('Image uploaded successfully!')
                             },
                             error: function (error) {
@@ -252,11 +240,12 @@ block style
             margin-right: 8px;
         }
         .h1, h1 {
-          font-size: 3.5rem;
           text-align: center;
           /*padding-top: 2em;*/
           font-family:cursive;
           color:#fff;
+            padding-right:73px;
+            margin-top: 28px;
         }
         .animated-marquee{
           background: #1697e0;
