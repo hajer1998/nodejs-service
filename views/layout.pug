@@ -14,6 +14,7 @@ html(lang='en')
     link(href='//ksylvest.github.io/jquery-growl/stylesheets/jquery.growl.css' rel='stylesheet')
     // Custom styles for this template
     link(href='/stylesheets/style.css' rel='stylesheet')
+    block head
   body
     header
       // Fixed navbar
@@ -37,7 +38,7 @@ html(lang='en')
             a.btn.btn-outline-danger.my-2.my-sm-0(href='/signout') Log Out
 
     //Begin page content
-    main.layoutcontainer(role='main')
+    main.layoutcontainer(role='main', style='height: 100%;')
       block content
       //include chat.pug
     //footer.footer

@@ -1,4 +1,7 @@
 extends layout
+block head
+    link(rel='stylesheet' href='//pro.fontawesome.com/releases/v5.10.0/css/all.css' crossorigin='anonymous')
+
 block content
     .animated-marquee
         .animated-marquee-container.animated-marquee-foreground
@@ -27,7 +30,9 @@ block content
                 div.col-md-12
                     div.card
                         div.card-header
-                            span(style='font-family:sans-serif;font-size: 20px;')='' + post.user.name
+                            span(style='font-family:sans-serif;font-size: 20px;')='' + post.user.name + '  '
+                            a(href='/chat/'+post.user._id, title='Start a Chat')
+                                span.fas.fa-comments
 
 
                         div.card-body(style='font-family:sans-serif;color: #313131;font-size: 15px;font-weight: lighter;letter-spacing: 2px;')='' + post.body
@@ -69,7 +74,6 @@ block content
                 h4.mt-5 No posts found
 
 block scripts
-    script(src='https://code.jquery.com/jquery-3.6.0.min.js')
     script.
         $(function () {
             $(document).on('click', '.unlike-post', function () {

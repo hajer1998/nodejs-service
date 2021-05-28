@@ -1,5 +1,4 @@
 #!/usr/bin/env node
-
 require('dotenv').config();
 const config = require('../config/config');
 const queue_name = 'nodejs';
@@ -40,19 +39,19 @@ amqp.connect(config.rabbitmq.host, function(error0, connection) {
                         console.log(err.message || "Some error occurred while creating the Notification.");
                     });
             }
-            if (message.message_type === 'message') {
-                db.connect();
-                let Message = require ('../models/Chat');
-                const chat = new Message({
-                    message: message.message,
-                    sender: message.sender
-                });
+            // if (message.message_type === 'message') {
+            //     db.connect();
+            //     let Message = require ('../models/Chat');
+            //     const chat = new Message({
+            //         message: message.message,
+            //         sender: message.sender
+            //     });
 
-                chat.save()
-                    .catch(err => {
-                        console.log(err.message || "Some error occurred while creating the Message.");
-                    });
-            }
+            //     chat.save()
+            //         .catch(err => {
+            //             console.log(err.message || "Some error occurred while creating the Message.");
+            //         });
+            // }
 
             io.socket.in("user-"+message.post_owner_id).emit('message', { room: "user-"+message.post_owner_id, message: message });
         }, {

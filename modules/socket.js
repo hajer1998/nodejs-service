@@ -25,19 +25,19 @@ module.exports = {
 
         socket.on("disconnect", () => console.log(`${socket.id} User disconnected.`));
 
-        socket.on("chat message", function(msg) {
-            console.log("message: "  +  msg);
-            //broadcast message to everyone in port:5000 except yourself.
-            socket.broadcast.emit("received", { message: msg  });
-
-            //save chat to the database
-            connect.then(db  =>  {
-                console.log("connected correctly to the server");
-//We are creating a new document and saving it into the Chat collection in the database.
-                let  chatMessage  =  new Chat({ message: msg, sender: "Anonymous"});
-                chatMessage.save();
-            });
-        });
+//         socket.on("chat message", function(msg) {
+//             console.log("message: "  +  msg);
+//             //broadcast message to everyone in port:5000 except yourself.
+//             socket.broadcast.emit("received", { message: msg  });
+//
+//             //save chat to the database
+//             connect.then(db  =>  {
+//                 console.log("connected correctly to the server");
+// //We are creating a new document and saving it into the Chat collection in the database.
+//                 let  chatMessage  =  new Chat({ message: msg, sender: "Anonymous"});
+//                 chatMessage.save();
+//             });
+//         });
     })
 
 };

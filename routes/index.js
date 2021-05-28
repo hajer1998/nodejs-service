@@ -4,7 +4,7 @@ const auth = require('../middleware/auth');
 var notificationController = require('../controllers/NotificationController');
 var postController = require('../controllers/PostController');
 var userController = require('../controllers/UserController')
-//const  chatRouter  = require("./route/chatroute");
+const chatController = require('../controllers/ChatController');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -52,6 +52,8 @@ router.post('/signup', userController.sign_up);
 
 //profile
 router.get('/profile/:id',auth, userController.profile);
+//chat
+router.get('/chat/:id', auth, chatController.render_chat_form);
 //render edit profile
 router.get('/render_edit_profile/:id', auth, userController.render_edit_profile);
 //update profile
