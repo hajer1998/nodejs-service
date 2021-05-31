@@ -1,11 +1,12 @@
 const config = require('../config/config')
+const db = require('../modules/db');
 const app = require('express')();
 const server = require('http').Server(app);
 
 
 const io = require('socket.io')(server, {
     cors: {
-        origin: config.appUrl,
+        origin: config.appUrl, // accept only connections coming from APP_URL
     }
 });
 module.exports = {
@@ -25,20 +26,26 @@ module.exports = {
 
         socket.on("disconnect", () => console.log(`${socket.id} User disconnected.`));
 
-//         socket.on("chat message", function(msg) {
-//             console.log("message: "  +  msg);
-//             //broadcast message to everyone in port:5000 except yourself.
-//             socket.broadcast.emit("received", { message: msg  });
-//
-//             //save chat to the database
-//             connect.then(db  =>  {
-//                 console.log("connected correctly to the server");
-// //We are creating a new document and saving it into the Chat collection in the database.
-//                 let  chatMessage  =  new Chat({ message: msg, sender: "Anonymous"});
-//                 chatMessage.save();
-//             });
-//         });
+        socket.on('chat_message', (data) => { // listen on a specific message event
+            console.log('Message received: ', data);
+            data = JSON.parse(data);
+            db.connect();
+            let chatMessage = require('../models/ChatMessage');
+            const chat_Message = new chatMessage({
+                sender_id: data.sender_id,
+                receiver_id: data.receiver_id,
+                message: data.message
+            });
+            chat_Message.save()
+                .catch(err => {
+                    console.log(err.data || "Some error occurred while saving messages.");
+                });
+            // socket.in: send message event to a specific channel
+            // socket.emit nhotou fiha data eli nhebou nb3thouha
+            socket.in("user-"+data.receiver_id).emit('chat_message', { room: "user-"+data.receiver_id, message: data.message, sender_id: data.sender_id });
+        });
     })
+
 
 };
 

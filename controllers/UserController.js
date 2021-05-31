@@ -77,7 +77,8 @@ exports.profile = function (req, res){
         }
 
         res.render('profile', {
-            user: result.response
+            user: result.response,
+            logged_in_user_id: req.logged_in_user_id
         });
     });
 }
@@ -127,6 +128,7 @@ exports.render_edit_profile = function (req, res) {
             user_id: result.response._id,
             user_name: result.response.name,
             user_email: result.response.email,
+            logged_in_user_id: req.logged_in_user_id
         });
     });
 }

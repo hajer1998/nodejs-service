@@ -1,5 +1,4 @@
 extends layout
-
 block content
     .content.full-height
         .page.full-height
@@ -26,9 +25,9 @@ block content
                                     .back
                                         i.zmdi.zmdi-arrow-left
                                     .avatar
-                                        img(src='https://avatars2.githubusercontent.com/u/398893?s=128' alt='Avatar')
+                                        img(src=receiver.imageLink, alt='Avatar')
                                     .name
-                                        span Zeno Rocha
+                                        span #{receiver.name}
                                         span.status online
                                     .actions.more
                                         i.zmdi.zmdi-more-vert
@@ -38,38 +37,39 @@ block content
                                         i.zmdi.zmdi-phone
                                 .conversation
                                     .conversation-container
-                                        .message.sent
-                                            | What happened last night?
-                                            span.metadata
-                                                span.time
-                                                span.tick
-                                                    svg#msg-dblcheck-ack(xmlns='http://www.w3.org/2000/svg' width='16' height='15' x='2063' y='2076')
-                                                        path(d='M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z' fill='#4fc3f7')
-                                        .message.received
-                                            | You were drunk.
-                                            span.metadata
-                                                span.time
-                                        .message.sent
-                                            | No I wasn't.
-                                            span.metadata
-                                                span.time
-                                                span.tick
-                                                    svg#msg-dblcheck-ack(xmlns='http://www.w3.org/2000/svg' width='16' height='15' x='2063' y='2076')
-                                                        path(d='M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.88a.32.32 0 0 1-.484.032l-.358-.325a.32.32 0 0 0-.484.032l-.378.48a.418.418 0 0 0 .036.54l1.32 1.267a.32.32 0 0 0 .484-.034l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.88a.32.32 0 0 1-.484.032L1.892 7.77a.366.366 0 0 0-.516.005l-.423.433a.364.364 0 0 0 .006.514l3.255 3.185a.32.32 0 0 0 .484-.033l6.272-8.048a.365.365 0 0 0-.063-.51z' fill='#4fc3f7')
-                                        .message.received
-                                            span#random You were hugging an old man with a beard screaming "DUMBLEDORE YOU'RE ALIVE!"
-                                            span.metadata
-                                                span.time
+                                        each message in messages
+                                            if (message.sender_id == logged_in_user_id)
+                                                .message.sent
+                                                    | #{message.message}
+                                                    span.metadata
+                                                        span.time
+                                            else
+                                                .message.received
+                                                    | #{message.message}
+                                                    span.metadata
+                                                        span.time
                                     form.conversation-compose
                                         .emoji
                                             svg#smiley(xmlns='http://www.w3.org/2000/svg' width='24' height='24' x='3147' y='3209')
                                                 path(fill-rule='evenodd' clip-rule='evenodd' d='M9.153 11.603c.795 0 1.44-.88 1.44-1.962s-.645-1.96-1.44-1.96c-.795 0-1.44.88-1.44 1.96s.645 1.965 1.44 1.965zM5.95 12.965c-.027-.307-.132 5.218 6.062 5.55 6.066-.25 6.066-5.55 6.066-5.55-6.078 1.416-12.13 0-12.13 0zm11.362 1.108s-.67 1.96-5.05 1.96c-3.506 0-5.39-1.165-5.608-1.96 0 0 5.912 1.055 10.658 0zM11.804 1.01C5.61 1.01.978 6.034.978 12.23s4.826 10.76 11.02 10.76S23.02 18.424 23.02 12.23c0-6.197-5.02-11.22-11.216-11.22zM12 21.355c-5.273 0-9.38-3.886-9.38-9.16 0-5.272 3.94-9.547 9.214-9.547a9.548 9.548 0 0 1 9.548 9.548c0 5.272-4.11 9.16-9.382 9.16zm3.108-9.75c.795 0 1.44-.88 1.44-1.963s-.645-1.96-1.44-1.96c-.795 0-1.44.878-1.44 1.96s.645 1.963 1.44 1.963z' fill='#7d8489')
-                                        input.input-msg(name='input' placeholder='Type a message' autocomplete='off' autofocus='')
-                                        button.send
+                                        input.input-msg(id='chat_message_input' name='chat_message_input' placeholder='Type a message' autocomplete='off' autofocus='')
+                                        button.send(type='submit')
                                             .circle
                                                 i.fas.fa-chevron-right
 
+
+
 block scripts
+    script.
+        $(function() {
+            $('form.conversation-compose').on('submit', function(e) {
+                e.preventDefault(); // prevent refresh when submit the form
+                let text = $('#chat_message_input').val();
+                socket.emit('chat_message', '{"sender_id": "#{logged_in_user_id}", "receiver_id": "#{receiver._id}", "message":"' + text + '"}');
+                $('#chat_message_input').val('');
+                $('.conversation-container').append('<div class="message sent">'+text+'<span class="metadata"><span class="time"></span></span></div>');
+            });
+        });
 
 
 block style
@@ -77,11 +77,9 @@ block style
         html, body {
           height: 100%;
         }
-
         .full-height {
             height: 100%;
         }
-
         .content {
             margin-top: 50px;
         }
@@ -90,17 +88,13 @@ block style
           align-items: center;
           justify-content: center;
         }
-
         .marvel-device .screen {
           text-align: left;
         }
-
         .screen-container {
           height: 100%;
         }
-
         /* Status Bar */
-
         .status-bar {
           height: 25px;
           background: #004e45;
@@ -108,13 +102,11 @@ block style
           font-size: 14px;
           padding: 0 8px;
         }
-
         .status-bar:after {
           content: "";
           display: table;
           clear: both;
         }
-
         .status-bar div {
           float: right;
           position: relative;
@@ -123,17 +115,13 @@ block style
           margin: 0 0 0 8px;
           font-weight: 600;
         }
-
         /* Chat */
-
         .chat {
           height: calc(100% - 69px);
         }
-
         .chat-container {
           height: 100%;
         }
-
         /* User Bar */
 
         .user-bar {
@@ -190,6 +178,7 @@ block style
           box-shadow: 0 1px 0 rgba(255, 255, 255, 0.1);
           display: block;
           width: 100%;
+          max-height: 35px;
         }
 
         .user-bar .name {
@@ -217,6 +206,7 @@ block style
           position: relative;
           background: #efe7dd url("https://cloud.githubusercontent.com/assets/398893/15136779/4e765036-1639-11e6-9201-67e728e86f39.jpg") repeat;
           z-index: 0;
+          margin-top: 0;
         }
 
         .conversation ::-webkit-scrollbar {
