@@ -16,7 +16,7 @@ block content
     .flexbox-right
 
         a.profile-picture
-            img(src='https://image.flaticon.com/icons/png/512/174/174316.png' width='100%' height='100%' alt='')
+            img.settings(src='https://cdn.discordapp.com/attachments/824017034819665934/852331068706652190/User-Icon-removebg-preview.png' width='100%' height='100%' alt='')
     #dropdownmenu.flexbox-col
         .menu-item
              a(href='/render_edit_profile/'+ user._id) Personal Informations
@@ -46,7 +46,7 @@ block content
 
                 //img(src='https://cdn.discordapp.com/attachments/805885199313141800/847564478287446046/bulle-chat_53876-25540-removebg.png' width='50px' height='50px' alt='')
 
-    h1(style='margin-top:28px position: relative ').mt-5 Posts list
+    h1(style='margin-top:28px position: relative ').mt-5 Posts
     .bouton_4
         a(href='/render_create_form' )
             i.fas.fa-plus(style="font-size: 20px;color: white;padding: 11px;")
@@ -97,6 +97,7 @@ block content
                 h4.mt-5 No posts found
 
 block scripts
+    //script(src='https://code.jquery.com/jquery-3.2.1.min.js')
     script.
         $(function () {
             $(document).on('click', '.unlike-post', function () {
@@ -224,6 +225,9 @@ block scripts
 
 block style
     Style.
+        .settings{
+        margin-top: 19px;
+        }
         .imageProfile {
             border-radius: 50%;
         }
@@ -241,6 +245,8 @@ block style
                         }
         body  {
              background: #000;
+             margin-top: -13px;
+
         }
         .float-right{
             display:flex
@@ -257,11 +263,10 @@ block style
           padding-top: 0em;
           font-family:cursive;
           color:#fff;
-          padding-right:73px;
           margin-top: 28px;
         }
         .animated-marquee{
-          background: #1697e0;
+          background: #92c9e8;
           margin: 0 auto;
           min-height: 340px;
           overflow: hidden;
@@ -581,7 +586,10 @@ block style
         margin-right: 25px;
         }
         .bouton_4{
-           position: relative;
+           position: fixed;
+           margin-right: 1em;
+           right: 0;
+           top: 22%;
             margin-right:1em;
                float: right;
                width: 40px;
@@ -631,10 +639,12 @@ block style
                     --font - poppins: "Poppins";
                 }
                 html, body {
+                margin-top: -4px;
                 margin: 0;
                 font-family: var(--font-main);
                 }
                 main {
+                margin-top: -7px;
                 width: 100%;
                 min-height: 100vh;
                 background-color: var(--bc-secondary);
@@ -830,7 +840,7 @@ block style
                 padding: 0 2em 0 0;
                 }
                 .menu-item a {
-                padding: 1.4em 2.4em;
+                padding: 1.6em 2.4em;
                 display: block;
                 color: var(--white);
                 text-decoration: none;

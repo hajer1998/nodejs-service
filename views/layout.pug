@@ -6,11 +6,12 @@ html(lang='en')
     meta(name='description' content='')
     meta(name='author' content='')
     link(rel='icon' href='/docs/4.0/assets/img/favicons/favicon.ico')
-    link( href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" rel="stylesheet")
+    link( href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" rel="stylesheet")
     title= title
     link(rel='canonical' href='https://getbootstrap.com/docs/4.0/examples/sticky-footer-navbar/')
     // Bootstrap core CSS
     link(href='//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' rel='stylesheet')
+    link(href='//cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js')
     link(href='//ksylvest.github.io/jquery-growl/stylesheets/jquery.growl.css' rel='stylesheet')
     // Custom styles for this template
     link(href='/stylesheets/style.css' rel='stylesheet')
@@ -18,7 +19,7 @@ html(lang='en')
   body
     header
       // Fixed navbar
-      nav.navbar.navbar-expand-md.navbar-dark.fixed-top.bg-dark
+      nav.navbar.navbar-expand-md.navbar-dark.fixed-top
         a.navbar-brand(href='#') Social
         button.navbar-toggler(type='button' data-toggle='collapse' data-target='#navbarCollapse' aria-controls='navbarCollapse' aria-expanded='false' aria-label='Toggle navigation')
           span.navbar-toggler-icon
@@ -35,23 +36,18 @@ html(lang='en')
             li.nav-item.active
               a.nav-link(href='/notifications') Notifications
           form.form-inline.mt-2.mt-md-0
-            a.btn.btn-outline-danger.my-2.my-sm-0(href='/signout') Log Out
+            a.btn.my-2.my-sm-0.logout(href='/signout') Log Out
 
     //Begin page content
     main.layoutcontainer(role='main', style='height: 100%;')
       block content
-      //include chat.pug
-    //footer.footer
-    //  .layoutcontainer
-    //    span.text-muted Place sticky footer content here.
-    //
-      Bootstrap core JavaScript
-      ==================================================
+
     // Placed at the end of the document so the pages load faster
     script(src='//code.jquery.com/jquery-3.2.1.slim.min.js' integrity='sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN' crossorigin='anonymous')
+    script(src='//code.jquery.com/jquery-3.2.1.min.js')
     script(src='//cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js')
     script(src='//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js')
-    script(src='http://localhost:8080/socket.io/socket.io.js')
+    script(src='//localhost:8080/socket.io/socket.io.js')
     script(src='//ksylvest.github.io/jquery-growl/javascripts/jquery.growl.js')
     script.
         var socket = io.connect('http://localhost:8080');
@@ -64,6 +60,9 @@ html(lang='en')
         socket.on('chat_message', function (data) {
           let chat_page = (window.location.href.indexOf('chat') >= 0) ? true : false;
           if (chat_page) {
+            if (data.sender_id != '#{sender_id}') {
+              return;
+            }
             let text = data.message;
             $('.conversation-container').append('<div class="message received">' + text + '<span class="metadata"><span class="time"></span></span></div>');
           } else {
@@ -85,5 +84,20 @@ html(lang='en')
       }
       .navbar-nav .nav-link {
         font-size:20px;
+      transition:0.2s
         }
-
+      .fixed-top{
+      background-color : #204f63!important;
+      }
+      .logout{
+      border: 2px solid #ff9797;
+      color: #ff9797;
+      }
+      .logout:hover{
+      border: 2px solid #ff9797;
+      color: white;
+      background :#ff9797;
+      }
+      .navbar-nav .nav-link:hover{
+        letter-spacing : 1px;
+      }

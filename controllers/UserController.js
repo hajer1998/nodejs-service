@@ -2,8 +2,8 @@ var client = require('../modules/client');
 const imgur = require('imgur');
 const config = require('../config/config')
 
-exports.sign_in = function (req, res) {
-    client.send_sync('hellolaravel', {
+exports.sign_in = async function (req, res) {
+    let response = await client.send_sync('hellolaravel', {
         route: "/api/user/login",
         method: "POST",
         headers: {
@@ -14,26 +14,26 @@ exports.sign_in = function (req, res) {
             email: req.body.email,
             password: req.body.password
         }
-    }, function (result, error) {
-        if (error) {
-            res.render('error', {
-                error_message: error.message,
-                error_status: error.status
-            });
-            return;
-        }
-        res.cookie('accessToken', result.data.token);
-        res.redirect('/postlist');
     });
+
+    if (response.error) {
+        res.render('error', {
+            error_message: response.error.message,
+            error_status: response.error.status
+        });
+        return;
+    }
+    res.cookie('accessToken', response.result.data.token);
+    res.redirect('/postlist');
 }
 
 exports.sign_out = function (req,res){
-        res.clearCookie('accessToken');
-        res.redirect('/');
+    res.clearCookie('accessToken');
+    res.redirect('/');
 }
 
-exports.sign_up = function (req,res) {
-    client.send_sync('hellolaravel', {
+exports.sign_up = async function (req,res) {
+    let response = await client.send_sync('hellolaravel', {
         route: "/api/user/register",
         method: "POST",
         headers: {
@@ -45,21 +45,21 @@ exports.sign_up = function (req,res) {
             email: req.body.email,
             password: req.body.password
         }
-    }, function (result, error) {
-        if (error) {
-            res.render('error', {
-                error_message: error.message,
-                error_status: error.status
-            });
-            return;
-        }
-        res.cookie('accessToken', result.data.token);
-        res.redirect('/postlist');
     });
+
+    if (response.error) {
+        res.render('error', {
+            error_message: response.error.message,
+            error_status: response.error.status
+        });
+        return;
+    }
+    res.cookie('accessToken', response.result.data.token);
+    res.redirect('/postlist');
 }
 
-exports.profile = function (req, res){
-    client.send_sync('hellolaravel', {
+exports.profile = async function (req, res){
+    let response = await client.send_sync('hellolaravel', {
         route: "/api/user/profile/"+req.logged_in_user_id,
         method: "GET",
         headers:{
@@ -68,23 +68,23 @@ exports.profile = function (req, res){
         },
         query: null,
         body: null
-    }, function (result,error) {
-        if (error) {
-            res.render('error', {
-                error_message: error.message,
-                error_status: error.status
-            });
-        }
+    });
 
-        res.render('profile', {
-            user: result.response,
-            logged_in_user_id: req.logged_in_user_id
+    if (response.error) {
+        res.render('error', {
+            error_message: response.error.message,
+            error_status: response.error.status
         });
+    }
+
+    res.render('profile', {
+        user: response.result.response,
+        logged_in_user_id: req.logged_in_user_id
     });
 }
 
-exports.updateProf = function (req, res){
-    client.send_sync('hellolaravel', {
+exports.updateProf = async function (req, res){
+    let response = await client.send_sync('hellolaravel', {
         route: "/api/user/updateProfile/"+req.logged_in_user_id,
         method: "PUT",
         headers:{
@@ -96,18 +96,19 @@ exports.updateProf = function (req, res){
             name: req.body.name,
             email: req.body.email
         }
-    }, function (result,error) {
-        if (error) {
-            res.render('error', {
-                error_message: error.message,
-                error_status: error.status
-            });
-        }
-        res.redirect('/profile/'+req.logged_in_user_id);
     });
+
+    if (response.error) {
+        res.render('error', {
+            error_message: response.error.message,
+            error_status: response.error.status
+        });
+    }
+
+    res.redirect('/profile/'+req.logged_in_user_id);
 }
-exports.render_edit_profile = function (req, res) {
-    client.send_sync('hellolaravel', {
+exports.render_edit_profile = async function (req, res) {
+    let response = await client.send_sync('hellolaravel', {
         route: "/api/user/profile/"+req.params.logged_in_user_id,
         method: "GET",
         headers: {
@@ -116,24 +117,24 @@ exports.render_edit_profile = function (req, res) {
         },
         query: null,
         body: null
-    }, function (result, error) {
-        if (error) {
-            res.render('error', {
-                error_message: error.message,
-                error_status: error.status
-            });
-            return;
-        }
-        res.render('updateProf', {
-            user_id: result.response._id,
-            user_name: result.response.name,
-            user_email: result.response.email,
-            logged_in_user_id: req.logged_in_user_id
+    });
+
+    if (response.error) {
+        res.render('error', {
+            error_message: response.error.message,
+            error_status: response.error.status
         });
+        return;
+    }
+    res.render('updateProf', {
+        user_id: response.result.response._id,
+        user_name: response.result.response.name,
+        user_email: response.result.response.email,
+        logged_in_user_id: req.logged_in_user_id
     });
 }
 
-exports.upload = async function (req, res) {
+exports.upload = function (req, res) {
     var imageLink;
 
     let image = req.body.image;
@@ -142,15 +143,14 @@ exports.upload = async function (req, res) {
         res.status(400).send('Image is invalid');
         return;
     }
-    //res.json({"img":"Hi"});
     image = image
         .replace(/^data:image\/(png|gif|jpeg);base64,/,'');
     imgur.setClientId(config.imgUrClientId);
     imgur
         .uploadBase64(image)
-        .then(function(json) {
+        .then(async function(json) {
             imageLink = json.link;
-            client.send_sync('hellolaravel', {
+            let response = await client.send_sync('hellolaravel', {
                 route: "/api/updateProfilePicture/"+req.logged_in_user_id,
                 method: "PUT",
                 headers:{
@@ -161,15 +161,14 @@ exports.upload = async function (req, res) {
                 body: {
                     imageLink: imageLink
                 }
-            }, function (result,error) {
-                if (error) {
-                    res.render('error', {
-                        error_message: error.message,
-                        error_status: error.status
-                    });
-
-                }
             });
+            if (response.error) {
+                res.render('error', {
+                    error_message: response.error.message,
+                    error_status: response.error.status
+                });
+
+            }
             res.status(204).send(imageLink);
         })
         .catch((error) => {

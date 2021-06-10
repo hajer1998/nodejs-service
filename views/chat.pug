@@ -25,7 +25,7 @@ block content
                                     .back
                                         i.zmdi.zmdi-arrow-left
                                     .avatar
-                                        img(src=receiver.imageLink, alt='Avatar')
+                                        img(src=receiver.imageLink)
                                     .name
                                         span #{receiver.name}
                                         span.status online
@@ -126,7 +126,7 @@ block style
 
         .user-bar {
           height: 55px;
-          background: #005e54;
+          background: #2193b0;
           color: #fff;
           padding: 0 8px;
           font-size: 24px;
@@ -336,14 +336,14 @@ block style
         }
 
         .message.sent {
-          background: #e1ffc7;
+          background: lightsteelblue;
           border-radius: 5px 0px 5px 5px;
           float: right;
         }
 
         .message.sent:after {
           border-width: 0px 0 10px 10px;
-          border-color: transparent transparent transparent #e1ffc7;
+          border-color: transparent transparent transparent lightsteelblue;
           top: 0;
           right: -10px;
         }
@@ -431,7 +431,7 @@ block style
         }
 
         .conversation-compose .send .circle {
-          background: #008a7c;
+          background: #2193b0;
           border-radius: 50%;
           color: #fff;
           position: relative;
