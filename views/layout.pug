@@ -26,10 +26,6 @@ html(lang='en')
         #navbarCollapse.collapse.navbar-collapse
           ul.navbar-nav.mr-auto
             li.nav-item.active
-              a.nav-link(href='/')
-                | Home
-                span.sr-only (current)
-            li.nav-item.active
               a.nav-link(href='/profile/' + logged_in_user_id) Profile
             li.nav-item.active
               a.nav-link(href='/postlist') Posts
@@ -59,10 +55,7 @@ html(lang='en')
         // Listen to incoming messages of type 'chat_message'
         socket.on('chat_message', function (data) {
           let chat_page = (window.location.href.indexOf('chat') >= 0) ? true : false;
-          if (chat_page) {
-            if (data.sender_id != '#{sender_id}') {
-              return;
-            }
+          if (chat_page && data.sender_id == '#{sender_id}') {
             let text = data.message;
             $('.conversation-container').append('<div class="message received">' + text + '<span class="metadata"><span class="time"></span></span></div>');
           } else {

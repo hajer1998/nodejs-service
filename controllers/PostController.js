@@ -1,4 +1,6 @@
 var client = require('../modules/client');
+const imgur = require('imgur');// service online 3d party to save images online
+const config = require('../config/config')
 exports.posts_list = async function (req, res) {
     let response = await client.send_sync('hellolaravel', {
         route: "/api/post",
@@ -69,6 +71,41 @@ exports.unlike_post = async function (req, res) {
     res.send(204);
 }
 exports.create_post = async function (req, res) {
+    if(req.body.image){
+        let image = req.body.image
+        image = image
+            .replace(/^data:image\/(png|gif|jpeg);base64,/,'');
+        imgur.setClientId(config.imgUrClientId);
+        imgur
+            .uploadBase64(image)
+            //en cas d succés
+            .then(async function(json) {
+                //en cas de succés on prend le lien w json howa l object eli rja3mel imgur f wostou link nekhdhouh
+                imageLink = json.link;
+                let response = await client.send_sync('hellolaravel', {
+                    route: "/api/post",
+                    method: "POST",
+                    headers: {
+                        Accept:"application/json",
+                        Authorization: "Bearer "+req.cookies.accessToken
+                    },
+                    query: null,
+                    body: {
+                        body:req.body.body == "" ? "Check this out !" : req.body.body,
+                        imageLink:imageLink
+                    }
+                });
+
+                if (response.error) {
+                    res.render('error', {
+                        error_message: response.error.message,
+                        error_status: response.error.status
+                    });
+                    return;
+                }
+            })
+    }else{
+
     let response = await client.send_sync('hellolaravel', {
         route: "/api/post",
         method: "POST",
@@ -79,6 +116,7 @@ exports.create_post = async function (req, res) {
         query: null,
         body: {
             body:req.body.body,
+            imageLink:"EMPTY"
         }
     });
 
@@ -89,9 +127,11 @@ exports.create_post = async function (req, res) {
         });
         return;
     }
+    }
 
     res.redirect('/postlist');
 }
+
 
 exports.delete_post = async function (req, res) {
     let response = await client.send_sync('hellolaravel', {
@@ -126,6 +166,7 @@ exports.update_post = async function (req, res) {
         query: null,
         body: {
             body: req.body.body,
+
         }
     });
 

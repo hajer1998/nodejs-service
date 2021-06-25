@@ -61,6 +61,4 @@ router.post('/updateProf',auth, userController.updateProf);
 //upload profile picture
 router.post('/upload', auth, userController.upload);
 
-//chat router
-//app.use("/chats", chatRouter);
 module.exports = router;

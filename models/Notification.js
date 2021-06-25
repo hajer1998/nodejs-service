@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const NotificationSchema = new mongoose.Schema({
-    userId: { type: String, default: '' },
+    user: { type: Object, default: '' },
     postId: {type: String, default: ''},
     ownerID: {type: String, default: ''}
 },{

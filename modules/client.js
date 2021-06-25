@@ -1,6 +1,6 @@
 var amqp = require('amqplib');
 var config = require('../config/config');
-
+//il permet de créer un correlation_id
 function generateUuid() {
     return Math.random().toString() +
         Math.random().toString() +

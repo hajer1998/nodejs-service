@@ -11,19 +11,19 @@ const io = require('socket.io')(server, {
 });
 module.exports = {
 
-    socket : any = io.on('connection', (socket) => {
+    socket : any = io.on('connection', (socket) => { // hedha yaml listen al function lkol k tconnecty 3 socket naffedh hedhoukom lkol
         console.log('User Socket Connected');
-
+//ko wahda 3ibara ala event maa listener
         socket.on('subscribe', function(room) {
             console.log('joining room', room);
             socket.join(room);
         });
-
+//ko wahda 3ibara ala event maa listener
         socket.on('unsubscribe', function(room) {
             console.log('leaving room', room);
             socket.leave(room);
         });
-
+//ko wahda 3ibara ala event maa listener
         socket.on("disconnect", () => console.log(`${socket.id} User disconnected.`));
 
         socket.on('chat_message', (data) => { // listen on a specific message event

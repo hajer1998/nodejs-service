@@ -21,7 +21,6 @@ block content
             i.fas.fa-plus(style="font-size: 20px;color: white;padding: 11px;")
             //img(src='https://s3-us-west-2.amazonaws.com/s.cdpn.io/173024/caddie.png')
             span.texteduboutton_4 Add Post
-    //a.btn.btn-warning(href='render_create_form' style="float:right; margin-top: -163px;position: relative;" ) New Post
     .question-box
         #octo.octo
         |
@@ -35,7 +34,9 @@ block content
                                 span.fas.fa-comments
 
 
-                        div.card-body(style='font-family:sans-serif;color: #313131;font-size: 15px;font-weight: lighter;letter-spacing: 2px;')='' + post.body
+                        div.card-body(style='font-family:sans-serif;color: #313131;font-size: 15px;font-weight: lighter;letter-spacing: 2px;')='' + (post.body == 'Check this out !'?'':post.body)
+                        if(post.imageLink != "EMPTY")
+                            img(src=post.imageLink)
                         div.card-footer
                             div.float-right
 
@@ -129,6 +130,7 @@ block scripts
                 });
             });
         });
+
 
 block style
     Style.
@@ -513,3 +515,9 @@ block style
             font-weight:300;
             font-size:18px;
         }
+        .title {
+            margin-right: auto;
+            margin-left: auto;
+            text-align: center
+        }
+

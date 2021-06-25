@@ -1,5 +1,5 @@
-var client = require('../modules/client');
-const imgur = require('imgur');
+var client = require('../modules/client');// l fake queue RPC
+const imgur = require('imgur');// service online 3d party to save images online
 const config = require('../config/config')
 
 exports.sign_in = async function (req, res) {
@@ -136,7 +136,7 @@ exports.render_edit_profile = async function (req, res) {
 
 exports.upload = function (req, res) {
     var imageLink;
-
+//yjib l image m request as base64 encoded l upload tsir f l 150
     let image = req.body.image;
 
     if (typeof image == 'undefined' || !image) {
@@ -148,8 +148,11 @@ exports.upload = function (req, res) {
     imgur.setClientId(config.imgUrClientId);
     imgur
         .uploadBase64(image)
+        //en cas d succés
         .then(async function(json) {
+            //en cas de succés on prend le lien w json howa l object eli rja3mel imgur f wostou link nekhdhouh
             imageLink = json.link;
+            // w baad teb3thha l &st micro-serv bch nsayvouha fel db
             let response = await client.send_sync('hellolaravel', {
                 route: "/api/updateProfilePicture/"+req.logged_in_user_id,
                 method: "PUT",

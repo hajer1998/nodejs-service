@@ -25,7 +25,7 @@ exports.create = function(req, res) {
 
 // Retrieve and return all notifications from the database.
 exports.findAll = (req, res) => {
-    let criteria = {ownerId: req.logged_in_user_id};
+    let criteria = {ownerID: req.logged_in_user_id};
 
     Notification.find(criteria, function(err, notifications) {
         res.render('listNot', {
